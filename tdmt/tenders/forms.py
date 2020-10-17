@@ -32,8 +32,8 @@ class TaskForm(ModelForm):
 class TaskFilterForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(TaskFilterForm, self).__init__(*args, **kwargs)
-        self.fields["state":].required = False
-        self.fields["state":].empty_label = ""
+        self.fields["state"].required = False
+        self.fields["state"].empty_label = ""
         self.helper = FormHelper()
         self.helper.layout = Layout(Row(Column("state",), Column(), css_class="edit-view"))
 

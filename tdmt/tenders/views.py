@@ -1,4 +1,3 @@
-from itertools import groupby
 from django.db import transaction
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
@@ -84,7 +83,7 @@ class BaseListView(ListView):
 
 class TaskViewSet(viewsets.ModelViewSet):
     serializer_class = TaskSerializer
-    queryset = Task.objects.select_related("tender")
+    queryset = Task.objects.all().order_by("updated_at")
 
 
 @method_decorator(login_required, name="dispatch")

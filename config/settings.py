@@ -1,12 +1,3 @@
-"""
-Django settings for tdmt project.
-
-For more information on this file, see
-https://docs.djangoproject.com/en/dev/topics/settings/
-
-For the full list of settings and their values, see
-https://docs.djangoproject.com/en/dev/ref/settings/
-"""
 from __future__ import absolute_import, unicode_literals
 import re
 import os
@@ -24,7 +15,7 @@ SECRET_KEY = "mwx@&97%!$fx_*zgj(2ygi^(s=oh5j(cqb$=+-mkd9scbt!0v0"
 # ------------------------------------------------------------------------------
 # Hosts/domain names that are valid for this site
 # See https://docs.djangoproject.com/en/1.6/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = ["127.0.0.1:8000", "typeof.ru"]
+ALLOWED_HOSTS = ["127.0.0.1", "gazpromhack.herokuapp.com"]
 # END SITE CONFIGURATION
 
 # APP CONFIGURATION
@@ -49,7 +40,6 @@ THIRD_PARTY_APPS = (
     "rest_framework.authtoken",
     "django_extensions",
     "watchman",
-    "simple_history",
     "computedfields",
     "crispy_forms",
     "django_crispy_bulma",
@@ -85,11 +75,6 @@ MIGRATION_MODULES = {"sites": "tdmt.contrib.sites.migrations"}
 # ------------------------------------------------------------------------------
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#debug
 DEBUG = True
-
-# FIXTURE CONFIGURATION
-# ------------------------------------------------------------------------------
-# See: https://docs.djangoproject.com/en/dev/ref/settings/#std:setting-FIXTURE_DIRS
-FIXTURE_DIRS = (os.path.join(APPS_DIR, "fixtures"),)
 
 # EMAIL CONFIGURATION
 # ------------------------------------------------------------------------------

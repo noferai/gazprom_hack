@@ -31,11 +31,10 @@ class TaskState(StateModel):
 
 class Task(ComputedFieldsModel):
     class Meta:
-        ordering = ["date"]
+        ordering = ["updated_at"]
         verbose_name = "Задача"
         verbose_name_plural = "Задачи"
 
-    date = models.DateField("Дата")
     state = models.ForeignKey(TaskState, on_delete=models.SET_NULL, null=True, verbose_name="Статус")
     comment = tinymce_models.HTMLField("Комментарий", blank=True, null=True)
     created_at = models.DateTimeField("Дата создания", auto_now_add=True)
