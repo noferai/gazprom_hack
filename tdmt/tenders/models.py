@@ -2,6 +2,7 @@ from computedfields.models import ComputedFieldsModel
 from django.db import models
 from simple_history.models import HistoricalRecords
 from tinymce import models as tinymce_models
+from tdmt.users.models import User
 
 
 class StateModel(models.Model):
@@ -66,33 +67,44 @@ class Task(ComputedFieldsModel):
 
 
 class Client(models.Model):
-    client_id = models.BigIntegerField()
-    age = models.IntegerField()
-    gender_code = models.CharField(max_length=1)
-    directory = models.CharField(max_length=256)
-    aMRG_eop = models.DecimalField(max_digits=30, decimal_places=2)
-    aCSH_eop = models.DecimalField(max_digits=30, decimal_places=2)
-    aCRD_eop = models.DecimalField(max_digits=30, decimal_places=2)
-    pCUR_eop = models.DecimalField(max_digits=30, decimal_places=2)
-    pCRD_eop = models.DecimalField(max_digits=30, decimal_places=2)
-    pSAV_eop = models.DecimalField(max_digits=30, decimal_places=2)
-    pDEP_eop = models.DecimalField(max_digits=30, decimal_places=2)
-    sWork_S = models.DecimalField(max_digits=30, decimal_places=2)
-    tPOS_S = models.DecimalField(max_digits=30, decimal_places=2)
+    client_id = models.BigIntegerField(null=True)
+    name = models.CharField(max_length=256, null=True)
+    surname = models.CharField(max_length=256, null=True)
+    birthday = models.DateField(null=True)
+    age = models.IntegerField(null=True)
+    gender_code = models.CharField(max_length=1, null=True)
+    directory = models.CharField(max_length=256, null=True)
+    aMRG_eop = models.DecimalField(max_digits=30, decimal_places=2, null=True)
+    aCSH_eop = models.DecimalField(max_digits=30, decimal_places=2, null=True)
+    aCRD_eop = models.DecimalField(max_digits=30, decimal_places=2, null=True)
+    pCUR_eop = models.DecimalField(max_digits=30, decimal_places=2, null=True)
+    pCRD_eop = models.DecimalField(max_digits=30, decimal_places=2, null=True)
+    pSAV_eop = models.DecimalField(max_digits=30, decimal_places=2, null=True)
+    pDEP_eop = models.DecimalField(max_digits=30, decimal_places=2, null=True)
+    sWork_S = models.DecimalField(max_digits=30, decimal_places=2, null=True)
+    tPOS_S = models.DecimalField(max_digits=30, decimal_places=2, null=True)
+    isPremium = models.BooleanField(null=True)
+    manager = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return str(self.client_id)
 
 
-class Transaction(models.Model):
-    client_id = models.BigIntegerField()
-    TRANSACTION_DT = models.DateField()
-    MCC_KIND_CD = models.CharField(max_length=256)
-    MCC_CD = models.DecimalField(max_digits=4, decimal_places=0)
-    CARD_AMOUNT_EQV_CBR = models.DecimalField(max_digits=30, decimal_places=2)
-
-
 class MCC(models.Model):
-    MCC_CD = models.DecimalField(max_digits=4, decimal_places=0)
-    GroupName = models.CharField(max_length=256)
-    Description = models.CharField(max_length=256)
+    MCC_CD = models.DecimalField(max_digits=4, decimal_places=0, null=True)
+    GroupName = models.CharField(max_length=256, null=True)
+    Description = models.CharField(max_length=256, null=True)
+
+    def __str__(self):
+        return str(self.Description)
+
+
+class Transaction(models.Model):
+    client_id = models.ForeignKey(Client, on_delete=models.SET_NULL, null=True)
+    TRANSACTION_DT = models.DateField(null=True)
+    MCC_KIND_CD = models.CharField(max_length=256, null=True)
+    MCC_CD = models.ForeignKey(MCC, on_delete=models.SET_NULL, null=True)
+    CARD_AMOUNT_EQV_CBR = models.DecimalField(max_digits=30, decimal_places=2, null=True)
+
+    def __str__(self):
+        return str(self.CARD_AMOUNT_EQV_CBR) + ' ' + str(self.MCC_KIND_CD)
