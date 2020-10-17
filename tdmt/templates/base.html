@@ -34,7 +34,7 @@
     <nav class="navbar columns is-fixed-top" role="navigation" aria-label="main navigation" id="app-header">
         <div class="navbar-brand column is-2 is-paddingless">
             <a class="navbar-item" href="/">
-                Labra WMS
+                ГазпромБанк
             </a>
             <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="touchMenu">
                 <span aria-hidden="true"></span>
@@ -65,10 +65,10 @@
                         {% endif %}
                     </a>
                     <div class="navbar-dropdown">
-                        {#                        <a class="dropdown-item" href="{% url 'users:detail' request.user.id %}">#}
-                        {#                            Профиль#}
-                        {#                        </a>#}
-                        {#                        <hr class="dropdown-divider">#}
+                        <a class="dropdown-item" href="{% url 'users:detail' request.user.id %}">
+                             Профиль
+                         </a>
+                         <hr class="dropdown-divider">
                         <a class="dropdown-item" href="{% url 'logout' %}">
                             Выйти
                         </a>
@@ -84,45 +84,10 @@
             <aside class="menu">
                 <ul class="menu-list">
                     <li>
-                        <a href="{% url 'tenders:list' %}">
-                    <span class="icon">
-                        <i class="fa fa-address-card"></i>
-                    </span> Контрагенты
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{% url 'tenders:auth-list' %}">
-                    <span class="icon">
-                        <i class="fa fa-building"></i>
-                    </span> Авторизации
-                        </a>
-                    </li>
-                    <li>
                         <a href="{% url 'tenders:task-list' %}">
                     <span class="icon">
                         <i class="fa fa-tasks"></i>
-                    </span> Заказы
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{% url 'tenders:product-list' %}">
-                    <span class="icon">
-                        <i class="fas fa-list-ol"></i>
-                    </span> Товары
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{% url 'tenders:product_type-list' %}">
-                    <span class="icon">
-                        <i class="fa fa-capsules"></i>
-                    </span> Номенклатура
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{% url 'users:list' %}">
-                    <span class="icon">
-                        <i class="fa fa-users"></i>
-                    </span> Пользователи
+                    </span> Задачи
                         </a>
                     </li>
                 </ul>

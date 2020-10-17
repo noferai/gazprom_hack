@@ -14,13 +14,6 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
     links = serializers.SerializerMethodField()
 
     @staticmethod
-    def get_tn_returned(obj):
-        if obj.tn_returned:
-            return "Да"
-        else:
-            return "Нет"
-
-    @staticmethod
     def get_links(obj):
         return {
             "edit": reverse("tenders:task-edit", kwargs={"pk": obj.id}),
@@ -35,7 +28,6 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
             "id",
             "state",
             "comment",
-            "date",
             "created_at",
             "updated_at",
             "links",
