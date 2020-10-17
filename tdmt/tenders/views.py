@@ -17,17 +17,8 @@ from .models import Task, TaskState
 from .serializers import TaskSerializer
 from .mixins import ValidationMixin, TaskMixin
 from .forms import (
-    TenderForm,
     TaskForm,
-    ProductForm,
-    ProductTypeForm,
-    AuthForm,
-    TenderGroupByForm,
     TaskFilterForm,
-    ProductFilterForm,
-    AuthGroupByForm,
-    ProductFormSet,
-    FormSetHelper,
 )
 
 
@@ -136,19 +127,8 @@ class TaskCreateView(TaskMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(TaskCreateView, self).get_context_data(**kwargs)
-        if self.request.POST:
-            formset = {
-                "form": ProductFormSet(self.request.POST),
-                "prefix": "products",
-                "title": "Добавить к заказу товары",
-            }
-
-        else:
-            formset = {"form": ProductFormSet(), "prefix": "products", "title": "Добавить к заказу товары"}
-
-        context["page_title"] = "Добавление заказа{}{}".format(TITLE_DELIM, SITE_TITLE)
-        custom_context = {"formset": formset, "helper": FormSetHelper()}
-        return {**context, **custom_context}
+        context["page_title"] = "Добавление задачи{}{}".format(TITLE_DELIM, SITE_TITLE)
+        return context
 
     def form_valid(self, form):
         response = super().form_valid(form)
