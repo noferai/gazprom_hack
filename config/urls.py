@@ -22,8 +22,6 @@ urlpatterns = [
     url(settings.ADMIN_URL, admin.site.urls),
     url(r"^login/$", auth_views.LoginView.as_view(), name="login"),
     url(r"^logout/$", auth_views.LogoutView.as_view(), {"next_page": "/"}, name="logout"),
-    # comments app
-    url(r"^comments/", include("django_comments_xtd.urls")),
     # API urls
     url(r"^api/", include(router.urls)),
     # User management

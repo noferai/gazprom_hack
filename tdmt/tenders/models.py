@@ -1,6 +1,5 @@
 from computedfields.models import ComputedFieldsModel
 from django.db import models
-from simple_history.models import HistoricalRecords
 from tinymce import models as tinymce_models
 
 
@@ -41,25 +40,3 @@ class Task(ComputedFieldsModel):
     comment = tinymce_models.HTMLField("Комментарий", blank=True, null=True)
     created_at = models.DateTimeField("Дата создания", auto_now_add=True)
     updated_at = models.DateTimeField("Обновлено", auto_now=True)
-
-    history = HistoricalRecords()
-
-    def is_done(self):
-        if self.state.stype == StateModel.STATE_DONE:
-            return True
-        return False
-
-    def is_started(self):
-        if self.state.stype == StateModel.STATE_STARTED:
-            return True
-        return False
-
-    def is_unstarted(self):
-        if self.state.stype == StateModel.STATE_UNSTARTED:
-            return True
-        return False
-
-    def is_kp(self):
-        if self.state.stype == StateModel.STATE_KP:
-            return True
-        return False

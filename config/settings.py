@@ -50,8 +50,6 @@ THIRD_PARTY_APPS = (
     "django_extensions",
     "watchman",
     "simple_history",
-    "django_comments_xtd",
-    "django_comments",
     "computedfields",
     "crispy_forms",
     "django_crispy_bulma",
@@ -110,12 +108,12 @@ FIXTURE_DIRS = (os.path.join(APPS_DIR, "fixtures"),)
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#databases
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": "wms",
-        "USER": "admin",
-        "PASSWORD": "Q4a1P4v1",
-        "HOST": "localhost",
-        "PORT": "3306",
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "NAME": os.environ.get("PG_DB"),
+        "USER": os.environ.get("PG_USER"),
+        "PASSWORD": os.environ.get("PG_PW"),
+        "HOST": os.environ.get("PG_HOST"),
+        "PORT": os.environ.get("PG_PORT"),
     }
 }
 
@@ -290,8 +288,6 @@ LOGGING = {
 
 # Your common stuff: Below this line define 3rd party library settings
 
-COMMENTS_APP = "django_comments_xtd"
-COMMENTS_XTD_MAX_THREAD_LEVEL = 2
 TRUE_FALSE_CHOICES = ((False, "Нет"), (True, "Да"))
 COMPUTEDFIELDS_ADMIN = True
 USE_THOUSAND_SEPARATOR = True
