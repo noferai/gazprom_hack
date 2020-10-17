@@ -11,9 +11,11 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from rest_framework import viewsets
 from config.settings import SITE_TITLE, TITLE_DELIM
+from rest_framework.decorators import api_view
 from ..utils import get_clean_next_url
 from .models import Task, TaskState, Client, Transaction, MCC
 from .serializers import TaskSerializer, ClientSerializer, MCCSerializer, TransactionSerializer
+from decimal import Decimal
 from .mixins import ValidationMixin, TaskMixin
 from .forms import (
     TaskForm,
@@ -202,3 +204,45 @@ def task_mark_as_done(request, pk):
         return JsonResponse(dict(url=url))
     else:
         return HttpResponseRedirect(url)
+
+    # ClientSerializer, MCCSerializer, TransactionSerializer
+
+@api_view(['GET'])
+def CheckHypotesis(client_id):
+    serializer_class = ClientSerializer
+    queryset = Client.objects.get(client_id=1)
+    servicesArray = []
+    checkVklad = CheckVklad()
+    checkVklad.check(queryset, servicesArray)
+
+    return None
+
+class CheckVklad:
+
+    def check(self, client, servicesArray):
+        money = client.pCUR_eop + client.pCRD_eop + client.pSAV_eop
+        if money > Decimal(0.5) * client.sWork_S:
+            servicesArray.append({
+                'type': 'Вклад',
+                'reason': 'На счетах у клиента хранится денет больше 50% от зарплаты'
+            })
+        if client.tPOS_S < Decimal(0.3) * client.sWork_S:
+            servicesArray.append({
+                'type': 'Вклад',
+                'reason': 'Траты меньше 30% от зарплаты'
+            })
+
+
+
+
+class HypotesisView(viewsets.ModelViewSet):
+    serializer_class = ClientSerializer
+    queryset = Client.objects.get(client_id=1)
+    servicesArray = []
+    checkVklad = CheckVklad()
+    checkVklad.check(queryset, servicesArray)
+
+
+
+
+
