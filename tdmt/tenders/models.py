@@ -1,4 +1,4 @@
-from computedfields.models import ComputedFieldsModel
+from computedfields.models import ComputedFieldsModel, computed
 from django.db import models
 from simple_history.models import HistoricalRecords
 from tinymce import models as tinymce_models
@@ -65,13 +65,16 @@ class Task(ComputedFieldsModel):
         return False
 
 
-class Client(models.Model):
-    client_id = models.BigIntegerField(null=True)
+class Client(ComputedFieldsModel):
+    class Meta:
+        verbose_name = "Клиент"
+        verbose_name_plural = "Клиенты"
+
     name = models.CharField(max_length=256, null=True)
     surname = models.CharField(max_length=256, null=True)
-    birthday = models.DateField(null=True)
+    birthday = models.CharField(max_length=256, null=True)
     age = models.IntegerField(null=True)
-    gender_code = models.CharField(max_length=1, null=True)
+    gender_code = models.CharField(max_length=256, null=True)
     directory = models.CharField(max_length=256, null=True)
     aMRG_eop = models.DecimalField(max_digits=30, decimal_places=2, null=True)
     aCSH_eop = models.DecimalField(max_digits=30, decimal_places=2, null=True)
@@ -82,15 +85,23 @@ class Client(models.Model):
     pDEP_eop = models.DecimalField(max_digits=30, decimal_places=2, null=True)
     sWork_S = models.DecimalField(max_digits=30, decimal_places=2, null=True)
     tPOS_S = models.DecimalField(max_digits=30, decimal_places=2, null=True)
-    isPremium = models.BooleanField(null=True)
     manager = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+
+    # @computed(models.BooleanField(null=True), depends=['name'])
+    # def isPremium(self):
+    #     # if (self.sWork_S > 250000 and self.tPOS_S > 50000) or \
+    #     #         (self.pCRD_eop + self.pCUR_eop + self.pDEP_eop + self.pSAV_eop > 2000000) or \
+    #     #         (self.pCRD_eop + self.pCUR_eop + self.pDEP_eop + self.pSAV_eop > 1000000 and self.tPOS_S > 50000):
+    #     #     return 1
+    #     # else:
+    #     #     return 0
+    #     return self.name == self.name
 
     def __str__(self):
         return str(self.client_id)
 
 
 class MCC(models.Model):
-    MCC_CD = models.DecimalField(max_digits=4, decimal_places=0, null=True)
     GroupName = models.CharField(max_length=256, null=True)
     Description = models.CharField(max_length=256, null=True)
 
@@ -100,7 +111,7 @@ class MCC(models.Model):
 
 class Transaction(models.Model):
     client_id = models.ForeignKey(Client, on_delete=models.SET_NULL, null=True)
-    TRANSACTION_DT = models.DateField(null=True)
+    TRANSACTION_DT = models.CharField(max_length=256, null=True)
     MCC_KIND_CD = models.CharField(max_length=256, null=True)
     MCC_CD = models.ForeignKey(MCC, on_delete=models.SET_NULL, null=True)
     CARD_AMOUNT_EQV_CBR = models.DecimalField(max_digits=30, decimal_places=2, null=True)
