@@ -63,3 +63,36 @@ class Task(ComputedFieldsModel):
         if self.state.stype == StateModel.STATE_KP:
             return True
         return False
+
+
+class Client(models.Model):
+    client_id = models.BigIntegerField()
+    age = models.IntegerField()
+    gender_code = models.CharField(max_length=1)
+    directory = models.CharField(max_length=256)
+    aMRG_eop = models.DecimalField(max_digits=30, decimal_places=2)
+    aCSH_eop = models.DecimalField(max_digits=30, decimal_places=2)
+    aCRD_eop = models.DecimalField(max_digits=30, decimal_places=2)
+    pCUR_eop = models.DecimalField(max_digits=30, decimal_places=2)
+    pCRD_eop = models.DecimalField(max_digits=30, decimal_places=2)
+    pSAV_eop = models.DecimalField(max_digits=30, decimal_places=2)
+    pDEP_eop = models.DecimalField(max_digits=30, decimal_places=2)
+    sWork_S = models.DecimalField(max_digits=30, decimal_places=2)
+    tPOS_S = models.DecimalField(max_digits=30, decimal_places=2)
+
+    def __str__(self):
+        return str(self.client_id)
+
+
+class Transaction(models.Model):
+    client_id = models.BigIntegerField()
+    TRANSACTION_DT = models.DateField()
+    MCC_KIND_CD = models.CharField(max_length=256)
+    MCC_CD = models.DecimalField(max_digits=4, decimal_places=0)
+    CARD_AMOUNT_EQV_CBR = models.DecimalField(max_digits=30, decimal_places=2)
+
+
+class MCC(models.Model):
+    MCC_CD = models.DecimalField(max_digits=4, decimal_places=0)
+    GroupName = models.CharField(max_length=256)
+    Description = models.CharField(max_length=256)
