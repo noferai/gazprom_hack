@@ -1,0 +1,184 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="eng">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>WMS</title>
+    <link rel="stylesheet" href="{% static 'vendor/css/bulma-0.7.4.min.css' %}">
+    <style>
+        #login {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: #F7F7F7;
+        }
+
+        #login .login-card {
+            background: #fff;
+            width: 24rem;
+            box-shadow: 0 0 7px 0 rgba(0, 0, 0, 0.11);
+        }
+
+        #login .login-card .card-title {
+            background-color: #7aa21f;
+            padding: 2rem;
+        }
+
+        #login .login-card .card-title h1 {
+            color: #fff;
+            text-align: center;
+            font-size: 1.2rem;
+        }
+
+        #login .login-card .content {
+            padding: 3rem 2.5rem 5rem;
+        }
+
+        #login .login-card #email, #login .login-card #password {
+            display: block;
+            width: 100%;
+            font-size: 1rem;
+            margin-bottom: 1.75rem;
+            padding: 0.25rem 0;
+            border: none;
+            border-bottom: 1px solid #dbdbdb;
+            transition: all .5s;
+        }
+
+        #login .login-card #email:hover, #login .login-card #password:hover {
+            border-color: #7a7a7a;
+        }
+
+        #login .login-card #email:active, #login .login-card #email:focus, #login .login-card #password:active, #login .login-card #password:focus {
+            border-color: #7aa21f;
+        }
+
+        #login .login-card .checkbox {
+            color: #b5b5b5;
+            font-size: 0.8rem;
+        }
+
+        #login .login-card .checkbox span {
+            margin-left: 0.5rem;
+        }
+
+        #login .login-card a {
+            font-size: 0.8rem;
+        }
+
+        #login .login-card .options {
+            color: #b5b5b5;
+            margin-bottom: 1.5rem;
+        }
+
+        #login .login-card button {
+            cursor: pointer;
+            font-size: 1.2rem;
+            color: #7aa21f;
+            border-radius: 5px;
+            display: block;
+            width: 100%;
+            background: transparent;
+            border: 2px solid #7aa21f;
+            padding: 0.9rem 0 1.1rem;
+            transition: color .5s, border-color .5s;
+        }
+
+        #login .login-card button:hover, #login .login-card button:focus {
+            color: #7aa21f;
+            border-color: #7aa21f;
+        }
+
+        #login .login-card button:active {
+            transform: translateY(1px);
+        }
+
+        label {
+            cursor: pointer;
+        }
+
+        .regular-checkbox {
+            display: none;
+        }
+
+        .regular-checkbox + label {
+            background-color: #fafafa;
+            border: 1px solid #dbdbdb;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            padding: 7px;
+            border-radius: 3px;
+            display: inline-block;
+            position: relative;
+        }
+
+        .regular-checkbox:checked + label {
+            background-color: #e9ecee;
+        }
+
+        .regular-checkbox:checked + label:after {
+            content: '\2714';
+            font-size: 11px;
+            position: absolute;
+            top: 0;
+            left: 3px;
+            color: #b5b5b5;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus,
+        button:focus {
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+<section class="columns" id="app-content">
+    <div id="login" class="column is-12">
+        <div class="login-card">
+            <div class="card-title">
+                <h1>Авторизация</h1>
+            </div>
+            <div class="content">
+                {% if form.subject.errors %}
+                    <ol>
+                        {% for error in form.subject.errors %}
+                            <li><strong>{{ error|escape }}</strong></li>
+                        {% endfor %}
+                    </ol>
+                {% endif %}
+                <form method="POST" data-nofetch>
+                    {% csrf_token %}
+                    {% for hidden in form.hidden_fields %}
+                        {{ hidden }}
+                    {% endfor %}
+                    {% for field in form.visible_fields %}
+                        <div class="field">
+                            {{ field.errors }}
+                            <label class="label">{{ field.label_tag }}</label>
+                            <div class="control">
+                                {{ field }}
+                            </div>
+                            {% if field.help_text %}
+                                <p class="help">{{ field.help_text|safe }}</p>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                    <div class="level options">
+                        <div class="checkbox level-left">
+                            <input type="checkbox" id="checkbox" class="regular-checkbox">
+                            <label for="checkbox"></label>
+                            <span>Запомнить</span>
+                        </div>
+{#                        <a class="btn btn-link level-right" href="#">Forgot Password?</a>#}
+                    </div>
+                    <button type="submit" class="btn btn-primary">Войти</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

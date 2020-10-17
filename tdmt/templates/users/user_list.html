@@ -1,0 +1,43 @@
+{% extends 'list.html' %}
+
+{% block object_add_url %}{% url 'users:add' %}{% endblock %}
+
+{% block table %}
+    <style>
+        .filter {
+            display: none !important;
+        }
+
+        .add {
+            border-radius: 4px !important;
+        }
+    </style>
+    <table id="staff" class="table is-hoverable is-fullwidth list" style="width: 100%">
+        <thead>
+        <tr>
+            <th>Email</th>
+            <th>Имя</th>
+            <th>Фамилия</th>
+            <th class="has-text-centered">Действия</th>
+        </tr>
+        </thead>
+    </table>
+    {% include 'confirm_delete_modal.html' %}
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+        dataTable = $('table#staff').DataTable({
+            "ajax": "/api/staff/?format=datatables",
+            ...globalTableHead,
+            "lengthChange": false,
+            "pageLength": 100,
+            "columns": [
+                {"data": "email"},
+                {"data": "first_name"},
+                {"data": "last_name"},
+                links_editDelete
+            ]
+        });
+    </script>
+{% endblock %}

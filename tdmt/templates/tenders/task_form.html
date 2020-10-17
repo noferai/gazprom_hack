@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block object_list_url %}{% url 'tenders:task-list' %}{% endblock %}
+
+{% block extra_head %}
+    {{ form.media }}
+{% endblock %}
+
+{% block content %}
+    <div class="card">
+        <div class="card-content">
+            <nav class="level">
+                <!-- Left side -->
+                <div class="level-left">
+                    <nav class="breadcrumb is-large" aria-label="breadcrumbs">
+                        <ul>
+                            <li><a href="{% url 'tenders:task-list' %}">Заказы</a></li>
+                            <li class="is-active">
+                                <a href="#" aria-current="page">
+                                    {% if object %}ТН: {{ object }}{% else %}Добавить заказ{% endif %}
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+
+                <!-- Right side -->
+                <div class="level-right">
+                    <div class="level-item">
+                    </div>
+                </div>
+            </nav>
+            {% crispy form %}
+        </div>
+    </div>
+{% endblock %}
+{% if formset %}
+    {% block extra_js %}
+        <script>
+            ready(function () {
+                $('.form-{{ formset.prefix }}').formset({
+                    prefix: "{{ formset.prefix }}"
+                });
+                const elem = document.querySelector('input[name="date"]');
+                const datepicker = new Datepicker(elem, {
+                    "format": "dd.mm.yyyy",
+                    "language": "ru",
+                    "placeholder": "Выберите дату",
+                    "autohide": true,
+                    "orientation": "bottom"
+
+                });
+            });
+        </script>
+    {% endblock %}
+{% endif %}

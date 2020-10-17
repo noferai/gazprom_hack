@@ -1,0 +1,55 @@
+### OSX ###
+.DS_Store
+.AppleDouble
+.LSOverride
+
+### SublimeText ###
+# cache files for sublime text
+*.tmlanguage.cache
+*.tmPreferences.cache
+*.stTheme.cache
+
+# Basics
+*.py[cod]
+__pycache__
+
+# Logs
+*.log
+pip-log.txt
+
+# Unit test / coverage reports
+.coverage
+.tox
+nosetests.xml
+htmlcov
+
+# Pycharm
+.idea/*
+
+# Vim
+
+*~
+*.swp
+*.swo
+
+# virtual environments
+.env
+
+# User-uploaded media
+tdmt/media/
+staticfiles/
+
+# Hitch directory
+tests/.hitch
+
+# pyenv
+.python-version
+
+.idea
+
+.editorconfig
+
+.pytest_cache/
+venv/
+env/
+*.sock

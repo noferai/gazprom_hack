@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    {% block extra_content %}
+    {% endblock %}
+    <div class="card">
+        <div class="card-filter">
+            <nav class="level" style="width: 100%">
+                {% include "listview-left.html" %}
+                <div class="level-right">
+                    <div class="field has-addons">
+                        <p class="control">
+                            <a class="button add"
+                               href="{% block object_add_url %}{% endblock %}?next={{ encoded_url }}">
+              <span class="icon is-small">
+                <i class="fas fa-plus"></i>
+              </span>
+                                <small>Добавить</small>
+                            </a>
+                        </p>
+                        {% if filters_form %}
+                            <p class="control">
+                                <a class="button filter" href="#">
+              <span class="icon is-small">
+                <i class="fas fa-filter"></i>
+              </span>
+                                    <small>Фильтры</small>
+                                </a>
+                            </p>
+                        {% endif %}
+                        {% if report_buttons %}
+                            <p class="control">
+                                <a class="button report" href="#">
+              <span class="icon is-small">
+                <i class="fas fa-file-download"></i>
+              </span>
+                                    <small>Отчет</small>
+                                </a>
+                            </p>
+                        {% endif %}
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <div class="card-content">
+            <div class="level filters-toggle">
+                <div class="">
+                    {% if filters_form %}
+                        {% crispy filters_form %}
+                    {% endif %}
+                </div>
+            </div>
+            <div class="dataTables_wrapper dt-bulma no-footer">
+                <div class="columns table-wrapper">
+                    <div id="loaded" class="column is-12">
+                        {% block table %}
+                        {% endblock %}
+                    </div>
+                </div>
+                <div class="columns table-footer-wrapper">
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

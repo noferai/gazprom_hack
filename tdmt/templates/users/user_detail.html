@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block object_list_url %}{% url 'users:list' %}{% endblock %}
+
+{% block content %}
+    <div class="card">
+        <div class="card-content">
+            <p class="title is-4">{{ user.first_name }} {{ user.last_name }}</p>
+            <div class="content">
+                <p>Email: {{ user.email }}</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

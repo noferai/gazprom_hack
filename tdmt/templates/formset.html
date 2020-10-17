@@ -1,0 +1,7 @@
+{% load crispy_forms_tags %}
+
+{% if formset %}
+    <div class="form-{{ formset.prefix }} formset-form">
+        {% crispy formset.form helper 'uni_form' %}
+    </div>
+{% endif %}
