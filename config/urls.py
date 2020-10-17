@@ -16,6 +16,9 @@ from tdmt.users import views as user_views
 router = DefaultRouter()
 router.register(r"tasks", tenders_views.TaskViewSet)
 router.register(r"staff", user_views.UserViewSet)
+router.register(r"client", tenders_views.ClientViewSet)
+router.register(r"mcc", tenders_views.MCCViewSet)
+router.register(r"transaction", tenders_views.TransactionViewSet)
 
 urlpatterns = [
     # Django Admin, use {% url 'admin:index' %}

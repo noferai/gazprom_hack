@@ -13,8 +13,8 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from rest_framework import viewsets
 from config.settings import SITE_TITLE, TITLE_DELIM
 from ..utils import get_clean_next_url
-from .models import Task, TaskState
-from .serializers import TaskSerializer
+from .models import Task, TaskState, Client, Transaction, MCC
+from .serializers import TaskSerializer, ClientSerializer, MCCSerializer, TransactionSerializer
 from .mixins import ValidationMixin, TaskMixin
 from .forms import (
     TaskForm,
@@ -85,6 +85,21 @@ class BaseListView(ListView):
 class TaskViewSet(viewsets.ModelViewSet):
     serializer_class = TaskSerializer
     queryset = Task.objects.select_related("tender")
+
+
+class ClientViewSet(viewsets.ModelViewSet):
+    serializer_class = ClientSerializer
+    queryset = Client.objects.all()
+
+
+class TransactionViewSet(viewsets.ModelViewSet):
+    serializer_class = TransactionSerializer
+    queryset = Transaction.objects.all()
+
+
+class MCCViewSet(viewsets.ModelViewSet):
+    serializer_class = MCCSerializer
+    queryset = MCC.objects.all()
 
 
 @method_decorator(login_required, name="dispatch")
