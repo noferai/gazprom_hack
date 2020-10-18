@@ -1,4 +1,4 @@
-from django.forms import ModelForm, Select
+from django.forms import ModelForm, Select, Form, ChoiceField
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, HTML
 from django_crispy_bulma.layout import Row, Column
@@ -30,22 +30,11 @@ class TaskForm(ModelForm):
         )
 
 
-class TaskFilterForm(ModelForm):
-    def __init__(self, *args, **kwargs):
-        super(TaskFilterForm, self).__init__(*args, **kwargs)
-        self.fields["isPremium"].required = False
-        self.fields["isPremium"].empty_label = ""
-        self.helper = FormHelper()
-        self.helper.layout = Layout(Row(Column("isPremium",), Column(), css_class="edit-view"))
-
-    class Meta:
-        model = Client
-        fields = ("isPremium",)
-        widgets = {
-            "isPremium": Select(
-                attrs={
-                    "onchange": 'filter_table("Статус", this.options[this.selectedIndex].innerText);',
-                    "class": "allowclear",
-                }
-            ),
-        }
+class TaskFilterForm(Form):
+    CHOICES = [("", ""), ("true", "true"), ("false", "false")]
+    group_by = ChoiceField(
+        label="Премиумный клиент?",
+        choices=CHOICES,
+        required=False,
+        widget=Select(attrs={"onchange": "filter_table('is_premium', this.options[this.selectedIndex].innerText);"}),
+    )
