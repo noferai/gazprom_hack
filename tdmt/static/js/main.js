@@ -3,6 +3,7 @@ function filter_table(_label, _value) {
         .columns()
         .header()
         .each(function (value, index) {
+            console.log(_value)
             if (value.textContent.toLowerCase() === _label.toLowerCase()) {
                 dataTable.column(index).search(_value).draw();
             }
