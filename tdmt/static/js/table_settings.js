@@ -10,7 +10,7 @@ globalTableHead = {
         "caseInsensitive": true
     },
     "lengthChange": false,
-    "pageLength": 100,
+    "pageLength": 50,
     "columnDefs": [
         {
             targets: '_all',

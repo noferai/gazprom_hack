@@ -8,7 +8,7 @@
         <thead>
         <tr>
             <th>Фамилия</th>
-            <th>Име</th>
+            <th>Имя</th>
             <th>Дата рождения</th>
             <th>Пол</th>
             <th>Город</th>
@@ -28,20 +28,20 @@
 {% endblock %}
 
 {% block extra_js %}
-    <script>
-    $( document ).ready(function() {
-  let endpoint = 'http://127.0.0.1:8000/api/visualizations/line/?client_id=1&mcc=1488'
-    $.ajax({
-        url: 'http://127.0.0.1:8000/api/visualizations/line/?client_id=1&mcc=1488',
-        contentType: "application/json",
-        dataType: 'json',
-        success: function(result){
-                Highcharts.chart('chart', result);
-                console.log(result);
-        }
-    })
-});
-    </script>
+{#    <script>#}
+{#    $( document ).ready(function() {#}
+{#  let endpoint = 'http://127.0.0.1:8000/api/visualizations/line/?client_id=1&mcc=1488'#}
+{#    $.ajax({#}
+{#        url: 'http://127.0.0.1:8000/api/visualizations/line/?client_id=1&mcc=1488',#}
+{#        contentType: "application/json",#}
+{#        dataType: 'json',#}
+{#        success: function(result){#}
+{#                Highcharts.chart('chart', result);#}
+{#                console.log(result);#}
+{#        }#}
+{#    })#}
+{#});#}
+{#    </script>#}
     <script>
         $.fn.dataTable.moment('DD.MM.YYYY');
         dataTable = $('table#tasks').DataTable({
@@ -53,6 +53,13 @@
             },
             ...exportButtons,
             "columns": [
+                {#{#}
+                {#    "data": "tender",#}
+                {#    "name": "tender.title",#}
+                {#    "render": function (data) {#}
+                {#        return "<a href='" + data.links.view + "' >" + data.title + "</a>";#}
+                {#    }#}
+                {#},#}
                 {"data": "surname"},
                 {"data": "name"},
                 {"data" : "birthday"},

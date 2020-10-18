@@ -49,6 +49,17 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class ClientSerializer(FieldMixin, serializers.ModelSerializer):
+    links = serializers.SerializerMethodField()
+
+    @staticmethod
+    def get_links(obj):
+        return {
+            "edit": reverse("tenders:task-edit", kwargs={"pk": obj.id}),
+            "view": reverse("tenders:task-detail", kwargs={"pk": obj.id}),
+            "delete": reverse("tenders:task-delete", kwargs={"pk": obj.id}),
+            "mark-done": reverse("tenders:task-done", kwargs={"pk": obj.id}),
+        }
+
     class Meta:
         model = Client
         exclude = ()
@@ -59,10 +70,12 @@ class TransactionSerializer(FieldMixin, serializers.ModelSerializer):
         model = Transaction
         exclude = ()
 
+
 class TransactionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Transaction
         exclude = ()
+
 
 class MCCSerializer(serializers.ModelSerializer):
     class Meta:
