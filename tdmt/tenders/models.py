@@ -34,8 +34,8 @@ class TaskState(StateModel):
 class Task(ComputedFieldsModel):
     class Meta:
         ordering = ["updated_at"]
-        verbose_name = "Задача"
-        verbose_name_plural = "Задачи"
+        verbose_name = "Клиент"
+        verbose_name_plural = "Клиенты"
 
     state = models.ForeignKey(TaskState, on_delete=models.SET_NULL, null=True, verbose_name="Статус")
     comment = tinymce_models.HTMLField("Комментарий", blank=True, null=True)

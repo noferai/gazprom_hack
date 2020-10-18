@@ -26,22 +26,6 @@
                     <small>Редактировать</small>
                 </a>
             </div>
-
-            <div class="level-item">
-                <div class="field has-addons">
-                    <form method="POST">
-                        {% csrf_token %}
-                        <a class="button is-outlined" type="submit"
-                           href="{% url  'tenders:task-delete' object.id %}">
-                <span class="icon is-small">
-                  <i class="fas fa-minus"></i>
-                </span>
-                            <small>Удалить</small>
-                        </a>
-                    </form>
-                </div>
-            </div>
-
         </div>
     </nav>
 
