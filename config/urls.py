@@ -17,6 +17,9 @@ from tdmt.visualizations import views as viz_views
 router = DefaultRouter()
 router.register(r"tasks", tenders_views.TaskViewSet)
 router.register(r"staff", user_views.UserViewSet)
+router.register(r"client", tenders_views.ClientViewSet)
+router.register(r"mcc", tenders_views.MCCViewSet)
+router.register(r"transaction", tenders_views.TransactionViewSet)
 router.register(r"visualizations", user_views.UserViewSet)
 #
 # viz_router = routers.NestedSimpleRouter(router, r"visualizations", lookup="visualizations")

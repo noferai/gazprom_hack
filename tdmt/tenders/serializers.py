@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.urls import reverse
-from .models import Task, TaskState
+from .models import Task, TaskState, Client, Transaction, MCC
 
 
 class TaskStateSerializer(serializers.ModelSerializer):
@@ -37,3 +37,21 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
             "created_at": {"format": "%d.%m.%Y"},
             "updated_at": {"format": "%d.%m.%Y"},
         }
+
+
+class ClientSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Client
+        exclude = ()
+
+
+class TransactionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Transaction
+        exclude = ()
+
+
+class MCCSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MCC
+        exclude = ()
