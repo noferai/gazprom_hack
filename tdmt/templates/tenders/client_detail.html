@@ -111,7 +111,29 @@
             </nav>
         </div>
     </div>
+
+    <div id="hypot">
+
+    </div>
 {% endblock %}
 {% block extra_js %}
+<script>
+    $( document ).ready(function() {
+        $.ajax({
+            url: "http://127.0.0.1:8000/api/hypot?client_id={{ object.id }}",
+            contentType: "application/json",
+            cache: false,
+            type: "GET",
+            success: function (response) {
+                for(let i = 0; i < response.length; i++) {
+                        $('#hypot').append('<p>' + response[i].type + '</p><p>' + response[i].reason + '</p>');
+                    }
+                console.log(response)
+            },
+            error: function (xhr) {
 
+            }
+        });
+    })
+</script>
 {% endblock %}

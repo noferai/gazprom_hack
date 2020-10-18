@@ -32,7 +32,7 @@ urlpatterns = [
     url(r"^api/visualizations/line/", viz_views.HighchartLine.as_view(), name="line"),
     # url(r"^visualizations/pie/", viz_views),
     # url(r"^visualizations/bar/", viz_views),
-    url(r"^api/nikita", tenders_views.HypotesisView.as_view(), name="nikita"),
+    url(r"^api/hypot", tenders_views.HypotesisView.as_view(), name="nikita"),
     # User management
     url(r"^staff/", include("tdmt.users.urls")),
     # Main
