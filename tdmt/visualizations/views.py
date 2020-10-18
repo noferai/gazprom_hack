@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from tdmt.tenders.models import Transaction
 from tdmt.tenders.views import TransactionSerializer
 from tdmt.visualizations.chart import LineChart
+from datetime import datetime
 
 NUMERIC_VALUES = [
     (1000 * 1000 * 1000 * 1000, " трлн"),
@@ -28,9 +29,12 @@ class HighchartLine(APIView):
     def get(self, request, *args, **kwargs):
         series = []
         client_id = request.query_params.get("client_id")
-        # mcc = request.query_params.get("mcc")
+        mcc = request.query_params.get("mcc", False)
 
         client_trans_q = Transaction.objects.filter(client_id=client_id)
+        if mcc:
+            client_trans_q.filter(MCC_CD_id=mcc)
+
         client_trans = list(
             TransactionSerializer(
                 client_trans_q, many=True, context={"fields": ["TRANSACTION_DT", "CARD_AMOUNT_EQV_CBR"]}
@@ -44,17 +48,25 @@ class HighchartLine(APIView):
                 date_value[trans["TRANSACTION_DT"]] += int(float(trans["CARD_AMOUNT_EQV_CBR"]))
             else:
                 date_value.update({trans["TRANSACTION_DT"]: int(float(trans["CARD_AMOUNT_EQV_CBR"]))})
-        data = [{"x": key, "y": value, **get_display_data(value), "unit": "руб."} for key, value in date_value.items()]
+
+        data = [
+            {
+                "x": datetime.strptime(key, "%d.%m.%Y").timestamp() * 1000,
+                "y": value,
+                "unit": "руб.",
+                "date_formatted": key,
+                **get_display_data(value),
+            }
+            for key, value in date_value.items()
+        ]
         data.sort(key=lambda x: x["x"])
         se = {
             "data": data,
             "name": "",
         }
         series.append(se)
-        visualization = LineChart(caption="",)
+        visualization = LineChart(x_axis_type="datetime")
         visualization.add_series(data=series)
         viz_json = visualization.export_json()
 
-        if viz_json is not None:
-            result = {"data": {"type": "chart_line", "attributes": viz_json}}
-            return Response(result)
+        return Response(viz_json)

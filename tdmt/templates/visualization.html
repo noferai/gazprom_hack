@@ -17,11 +17,9 @@
     </style>
 {% endblock %}
 
-<div>
     <figure class="highcharts-figure">
-        <div id='chart'></div>
+        <div id='container'></div>
     </figure>
-</div>
 
 
 {% block extra_js %}
@@ -35,6 +33,27 @@
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
     <script src="https://code.highcharts.com/modules/export-data.js"></script>
     <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+    <script>
+        Highcharts.setOptions({
+            lang: {
+                decimalPoint: ",",
+                thousandsSep: " ",
+                numericSymbols: [" тыс.", " млн", " млрд", " трлн", "P", "E"],
+                downloadPNG: "Скачать в формате PNG",
+                downloadSVG: "Скачать в формате SVG"
+            },
+            colors: [
+                '#1c207a',
+                '#85edbb',
+                '#ed6527',
+                '#ed1941',
+                '#437dff',
+                '#37d480',
+                '#969696',
+
+            ]
+    });
+</script>
     <script>
         Highcharts.setOptions({
             lang: {

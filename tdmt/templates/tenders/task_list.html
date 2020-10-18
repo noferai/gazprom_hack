@@ -3,7 +3,6 @@
 {% block object_add_url %}{% url 'tenders:task-add' %}{% endblock %}
 
 {% block table %}
-    {% include "visualization.html" %}
     <table id="tasks" class="table is-hoverable is-fullwidth list" style="width: 100%">
         <thead>
         <tr>
@@ -29,20 +28,6 @@
 {% endblock %}
 
 {% block extra_js %}
-{#    <script>#}
-{#    $( document ).ready(function() {#}
-{#  let endpoint = 'http://127.0.0.1:8000/api/visualizations/line/?client_id=1&mcc=1488'#}
-{#    $.ajax({#}
-{#        url: 'http://127.0.0.1:8000/api/visualizations/line/?client_id=1&mcc=1488',#}
-{#        contentType: "application/json",#}
-{#        dataType: 'json',#}
-{#        success: function(result){#}
-{#                Highcharts.chart('chart', result);#}
-{#                console.log(result);#}
-{#        }#}
-{#    })#}
-{#});#}
-{#    </script>#}
     <script>
         $.fn.dataTable.moment('DD.MM.YYYY');
         dataTable = $('table#tasks').DataTable({
