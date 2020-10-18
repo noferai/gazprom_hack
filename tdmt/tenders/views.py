@@ -221,6 +221,7 @@ class CheckVklad:
         if Decimal(client["tPOS_S"]) < Decimal(0.3) * Decimal(client["sWork_S"]):
             servicesArray.append({"type": "Вклад", "reason": "Траты меньше 30% от зарплаты"})
 
+
 def sumByKat(dictions, category):
     counter = 0
     for diction in dictions:
@@ -228,6 +229,7 @@ def sumByKat(dictions, category):
             counter += Decimal(diction['CARD_AMOUNT_EQV_CBR'])
 
     return counter
+
 
 class CheckAuto():
     def check(self, client, trans, servicesArray):
@@ -251,6 +253,7 @@ class CheckAuto():
                 {"type": "Авто кредит", "reason": "В последнее время клиент много тратит на ангента по автотранспорту"}
             )
 
+
 class MiliCard():
     def check(self, client, trans, servicesArray):
         avia = sumByKat(trans, 'Авиалинии, авиакомпании - нигде больше не классифицированные')
@@ -267,6 +270,7 @@ class MiliCard():
                 {"type": "Мили", "reason": "В последнее время клиент часто стал арендовать номера в отелях"}
             )
 
+
 class Investicii():
     def check(self, client, trans, servicesArray):
         fin = sumByKat(trans, 'Финансовые учреждения – торговля и услуги')
@@ -277,6 +281,7 @@ class Investicii():
                                                           "\"Финансовые учреждения – торговля и услуги\""}
             )
 
+
 class Ipoteka():
     def check(self, client, trans, servicesArray):
         agent = sumByKat(trans, 'Агенты недвижимости и менеджеры - Аренда')
@@ -284,7 +289,7 @@ class Ipoteka():
         if agent > 20000:
             servicesArray.append(
                 {"type": "Ипотека", "reason": "В последнее время клиент часто стал тратить в категории "
-                                                          "\"Агенты недвижимости и менеджеры - Аренда\""}
+                                              "\"Агенты недвижимости и менеджеры - Аренда\""}
             )
 
         univ = sumByKat(trans, 'Колледжи, университеты')
@@ -294,6 +299,7 @@ class Ipoteka():
                 {"type": "Ипотека", "reason": "В последнее время клиент стал тратить в категории "
                                               "\"Колледжи, университеты\""}
             )
+
 
 class HypotesisView(views.APIView):
     def get(self, request):
@@ -305,7 +311,8 @@ class HypotesisView(views.APIView):
         client_s = ClientSerializer(client)
 
         for tran in trans_s.data:
-            tran['MCC description'] = next(item for item in transInfo_s.data if item["id"] == tran['MCC_CD'])['Description']
+            tran['MCC description'] = next(item for item in transInfo_s.data if item["id"] == tran['MCC_CD'])[
+                'Description']
 
         servicesArray = []
         check = CheckVklad()
@@ -318,6 +325,5 @@ class HypotesisView(views.APIView):
         check.check(client_s.data, trans_s.data, servicesArray)
         check = Ipoteka()
         check.check(client_s.data, trans_s.data, servicesArray)
-
 
         return Response(servicesArray)
