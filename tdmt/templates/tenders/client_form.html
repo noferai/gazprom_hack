@@ -15,10 +15,10 @@
                 <div class="level-left">
                     <nav class="breadcrumb is-large" aria-label="breadcrumbs">
                         <ul>
-                            <li><a href="{% url 'tenders:task-list' %}">Заказы</a></li>
+                            <li><a href="{% url 'tenders:task-list' %}">Клиенты</a></li>
                             <li class="is-active">
                                 <a href="#" aria-current="page">
-                                    {% if object %}ТН: {{ object }}{% else %}Добавить заказ{% endif %}
+                                    {% if object %}{{ object.surname }} {{ object.name }}{% else %}Добавить клиента{% endif %}
                                 </a>
                             </li>
                         </ul>
