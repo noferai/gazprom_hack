@@ -15,7 +15,6 @@ from tdmt.users import views as user_views
 
 router = DefaultRouter()
 router.register(r"tasks", tenders_views.TaskViewSet)
-router.register(r"nikitaTest", tenders_views.HypotesisView, basename='nikitatest')
 router.register(r"staff", user_views.UserViewSet)
 router.register(r"client", tenders_views.ClientViewSet)
 router.register(r"mcc", tenders_views.MCCViewSet)
@@ -28,6 +27,7 @@ urlpatterns = [
     url(r"^logout/$", auth_views.LogoutView.as_view(), {"next_page": "/"}, name="logout"),
     # API urls
     url(r"^api/", include(router.urls)),
+    url(r"^api/nikita/", tenders_views.HypotesisView.as_view(), name="nikita"),
     # User management
     url(r"^staff/", include("tdmt.users.urls")),
     # Tenders

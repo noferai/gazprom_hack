@@ -10,12 +10,10 @@ from .forms import UserUpdateForm, AdminPasswordUpdateForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from config.settings import SITE_TITLE, TITLE_DELIM
 from .models import User
-from ..tenders.models import  Client, MCC, Transaction
+from ..tenders.models import Client, MCC, Transaction
 from ..tenders.serializers import ClientSerializer, MCCSerializer, TransactionSerializer
 from .serializers import UserSerializer
-from rest_framework.decorators import  api_view
-
-
+from rest_framework.decorators import api_view
 
 
 class UserDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
@@ -136,6 +134,3 @@ class UserDeleteView(LoginRequiredMixin, DeleteView):
     @property
     def success_url(self):
         return get_clean_next_url(self.request, reverse_lazy("users:list"))
-
-
-

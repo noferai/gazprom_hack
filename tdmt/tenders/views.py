@@ -10,6 +10,8 @@ from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from rest_framework import viewsets, views
+from rest_framework.renderers import JSONRenderer
+from rest_framework.response import Response
 from config.settings import SITE_TITLE, TITLE_DELIM
 from rest_framework.decorators import api_view
 from ..utils import get_clean_next_url
@@ -207,50 +209,24 @@ def task_mark_as_done(request, pk):
 
     # ClientSerializer, MCCSerializer, TransactionSerializer
 
-@api_view(['GET'])
-def CheckHypotesis(client_id):
-    serializer_class = ClientSerializer
-    queryset = Client.objects.get(id=1)
-    servicesArray = []
-    checkVklad = CheckVklad()
-    checkVklad.check(queryset, servicesArray)
-
-    return None
 
 class CheckVklad:
-
     def check(self, client, servicesArray):
-        money = client.pCUR_eop + client.pCRD_eop + client.pSAV_eop
-        if money > Decimal(0.5) * client.sWork_S:
-            servicesArray.append({
-                'type': 'Вклад',
-                'reason': 'На счетах у клиента хранится денет больше 50% от зарплаты'
-            })
-        if client.tPOS_S < Decimal(0.3) * client.sWork_S:
-            servicesArray.append({
-                'type': 'Вклад',
-                'reason': 'Траты меньше 30% от зарплаты'
-            })
-
-
+        money = Decimal(client["pCUR_eop"]) + Decimal(client["pCRD_eop"]) + Decimal(client["pSAV_eop"])
+        if money > Decimal(0.5) * Decimal(client["sWork_S"]):
+            servicesArray.append(
+                {"type": "Вклад", "reason": "На счетах у клиента хранится денет больше 50% от зарплаты"}
+            )
+        if Decimal(client["tPOS_S"]) < Decimal(0.3) * Decimal(client["sWork_S"]):
+            servicesArray.append({"type": "Вклад", "reason": "Траты меньше 30% от зарплаты"})
 
 
 class HypotesisView(views.APIView):
-
-    @classmethod
-    def get_extra_actions(cls):
-        return []
-
-    def get(self):
-        serializer_class = ClientSerializer
-        queryset = Client.objects.get(id=1)
-        servicesArray = []
+    def get(self, response):
+        client = Client.objects.get(pk=1)
+        trans = Transaction.objects.filter(client_id=1)
+        client_s = ClientSerializer(client)
+        servicesArray = TransactionSerializer(trans, many=True)
         checkVklad = CheckVklad()
-        checkVklad.check(queryset, servicesArray)
-
-        return servicesArray
-
-
-
-
-
+        checkVklad.check(client_s.data, servicesArray.data)
+        return Response(client_s.data)
