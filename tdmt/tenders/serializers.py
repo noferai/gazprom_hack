@@ -3,6 +3,15 @@ from django.urls import reverse
 from .models import Task, TaskState, Client, Transaction, MCC
 
 
+class FieldMixin(object):
+    def get_field_names(self, *args, **kwargs):
+        field_names = self.context.get("fields", None)
+        if field_names:
+            return field_names
+
+        return super(FieldMixin, self).get_field_names(*args, **kwargs)
+
+
 class TaskStateSerializer(serializers.ModelSerializer):
     class Meta:
         model = TaskState
@@ -39,13 +48,13 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
         }
 
 
-class ClientSerializer(serializers.ModelSerializer):
+class ClientSerializer(FieldMixin, serializers.ModelSerializer):
     class Meta:
         model = Client
         exclude = ()
 
 
-class TransactionSerializer(serializers.ModelSerializer):
+class TransactionSerializer(FieldMixin, serializers.ModelSerializer):
     class Meta:
         model = Transaction
         exclude = ()

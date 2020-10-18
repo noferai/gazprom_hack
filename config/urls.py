@@ -20,7 +20,6 @@ router.register(r"staff", user_views.UserViewSet)
 router.register(r"client", tenders_views.ClientViewSet)
 router.register(r"mcc", tenders_views.MCCViewSet)
 router.register(r"transaction", tenders_views.TransactionViewSet)
-router.register(r"visualizations", user_views.UserViewSet)
 #
 # viz_router = routers.NestedSimpleRouter(router, r"visualizations", lookup="visualizations")
 
@@ -32,9 +31,9 @@ urlpatterns = [
     # API urls
     url(r"^api/", include(router.urls)),
     # Visualizations
-    url(r"^visualizations/line/", viz_views),
-    url(r"^visualizations/pie/", viz_views),
-    url(r"^visualizations/bar/", viz_views),
+    url(r"^api/visualizations/line/", viz_views.HighchartLine.as_view(), name="line"),
+    # url(r"^visualizations/pie/", viz_views),
+    # url(r"^visualizations/bar/", viz_views),
     # User management
     url(r"^staff/", include("tdmt.users.urls")),
     # Main

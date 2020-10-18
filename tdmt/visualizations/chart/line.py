@@ -16,7 +16,7 @@ class LineChart:
             self.tooltip = Tooltip(point_format=tooltip_format, value_suffix="")
         else:
             self.tooltip = Tooltip(
-                point_format="{series.name}, {point.category}:<br/><b>{point.display_value:.2f}{point.display_suffix}{point.unit}</b><br/>",
+                point_format="{series.name}, {point.category}:<br/><b>{point.display_value:.2f}{point.display_suffix}</b><br/>",
                 value_suffix="",
             )
 
