@@ -212,10 +212,10 @@ class CheckVklad:
         money = Decimal(client["pCUR_eop"]) + Decimal(client["pCRD_eop"]) + Decimal(client["pSAV_eop"])
         if money > Decimal(0.3) * Decimal(client["sWork_S"]):
             servicesArray.append(
-                {"type": "Вклад", "reason": "На счетах у клиента хранится денет больше 50% от зарплаты"}
+                {"type": "Вклад", "reason": "На счетах у клиента хранится денет больше 30% от зарплаты"}
             )
         if Decimal(client["tPOS_S"]) < Decimal(0.7) * Decimal(client["sWork_S"]):
-            servicesArray.append({"type": "Вклад", "reason": "Траты меньше 30% от зарплаты"})
+            servicesArray.append({"type": "Вклад", "reason": "Траты меньше 70% от зарплаты"})
 
 
 def sumByKat(dictions, category):
