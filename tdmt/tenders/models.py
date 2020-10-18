@@ -98,7 +98,7 @@ class Client(ComputedFieldsModel):
     #     return self.name == self.name
 
     def __str__(self):
-        return str(self.client_id)
+        return str(self.id)
 
 
 class MCC(models.Model):

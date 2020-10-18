@@ -9,7 +9,7 @@ from django.views.generic import RedirectView
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from rest_framework import viewsets
+from rest_framework import viewsets, views
 from config.settings import SITE_TITLE, TITLE_DELIM
 from rest_framework.decorators import api_view
 from ..utils import get_clean_next_url
@@ -210,7 +210,7 @@ def task_mark_as_done(request, pk):
 @api_view(['GET'])
 def CheckHypotesis(client_id):
     serializer_class = ClientSerializer
-    queryset = Client.objects.get(client_id=1)
+    queryset = Client.objects.get(id=1)
     servicesArray = []
     checkVklad = CheckVklad()
     checkVklad.check(queryset, servicesArray)
@@ -235,12 +235,20 @@ class CheckVklad:
 
 
 
-class HypotesisView(viewsets.ModelViewSet):
-    serializer_class = ClientSerializer
-    queryset = Client.objects.get(client_id=1)
-    servicesArray = []
-    checkVklad = CheckVklad()
-    checkVklad.check(queryset, servicesArray)
+class HypotesisView(views.APIView):
+
+    @classmethod
+    def get_extra_actions(cls):
+        return []
+
+    def get(self):
+        serializer_class = ClientSerializer
+        queryset = Client.objects.get(id=1)
+        servicesArray = []
+        checkVklad = CheckVklad()
+        checkVklad.check(queryset, servicesArray)
+
+        return servicesArray
 
 
 

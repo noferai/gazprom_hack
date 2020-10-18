@@ -15,7 +15,7 @@ from tdmt.users import views as user_views
 
 router = DefaultRouter()
 router.register(r"tasks", tenders_views.TaskViewSet)
-router.register(r"nikitaTest", tenders_views.CheckHypotesis, basename='nikitatest')
+router.register(r"nikitaTest", tenders_views.HypotesisView, basename='nikitatest')
 router.register(r"staff", user_views.UserViewSet)
 router.register(r"client", tenders_views.ClientViewSet)
 router.register(r"mcc", tenders_views.MCCViewSet)
