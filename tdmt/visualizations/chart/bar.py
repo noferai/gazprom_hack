@@ -1,4 +1,4 @@
-from tdmt.visualizations.chart import Tooltip, ChartOptions, PlotOptions, Series, Axis, Chart, Legend
+from tdmt.visualizations.chart.chart import Tooltip, ChartOptions, PlotOptions, Series, Axis, Chart, Legend
 
 
 class ChartBar:

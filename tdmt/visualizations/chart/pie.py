@@ -1,4 +1,4 @@
-from tdmt.visualizations.chart import ChartOptions, PlotOptions, Tooltip, Axis, Series, Chart, Legend
+from tdmt.visualizations.chart.chart import ChartOptions, PlotOptions, Tooltip, Axis, Series, Chart, Legend
 
 
 class ChartPie:

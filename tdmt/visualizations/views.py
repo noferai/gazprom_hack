@@ -1,6 +1,8 @@
-from rest_framework.decorators import api_view
+from rest_framework.views import APIView
+from tdmt.tenders.models import Transaction
 
 
-@api_view(["GET"])
-def highcharts_viz(request):
-    pass
+class HighchartLine(APIView):
+    def get(self, request, *args, **kwargs):
+        client_id = kwargs.get("client_id")
+        mcc = kwargs.get("mcc")

@@ -8,17 +8,18 @@ from django.contrib.auth import views as auth_views
 from django.urls import path
 from django.views import defaults as default_views
 
-from rest_framework_nested import routers
+from rest_framework.routers import DefaultRouter
 
 from tdmt.tenders import views as tenders_views
 from tdmt.users import views as user_views
+from tdmt.visualizations import views as viz_views
 
-router = routers.SimpleRouter()
+router = DefaultRouter()
 router.register(r"tasks", tenders_views.TaskViewSet)
 router.register(r"staff", user_views.UserViewSet)
 router.register(r"visualizations", user_views.UserViewSet)
-
-viz_router = routers.NestedSimpleRouter(router, r"visualizations", lookup="visualizations")
+#
+# viz_router = routers.NestedSimpleRouter(router, r"visualizations", lookup="visualizations")
 
 urlpatterns = [
     # Django Admin, use {% url 'admin:index' %}
@@ -27,6 +28,10 @@ urlpatterns = [
     url(r"^logout/$", auth_views.LogoutView.as_view(), {"next_page": "/"}, name="logout"),
     # API urls
     url(r"^api/", include(router.urls)),
+    # Visualizations
+    url(r"^visualizations/line/", viz_views),
+    url(r"^visualizations/pie/", viz_views),
+    url(r"^visualizations/bar/", viz_views),
     # User management
     url(r"^staff/", include("tdmt.users.urls")),
     # Main
