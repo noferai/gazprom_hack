@@ -53,15 +53,18 @@
             },
             ...exportButtons,
             "columns": [
-                {#{#}
-                {#    "data": "tender",#}
-                {#    "name": "tender.title",#}
-                {#    "render": function (data) {#}
-                {#        return "<a href='" + data.links.view + "' >" + data.title + "</a>";#}
-                {#    }#}
-                {#},#}
-                {"data": "surname"},
-                {"data": "name"},
+                {
+                    "data": "surname",
+                    "render": function (data, type, full) {
+                        return "<a href='" + full.links.view + "' >" + full.surname + "</a>";
+                    }
+                },
+                {
+                    "data": "name",
+                    "render": function (data, type, full) {
+                        return "<a href='" + full.links.view + "' >" + full.name + "</a>";
+                    }
+                },
                 {"data" : "birthday"},
                 {"data" : "gender_code"},
                 {"data" : "directory"},

@@ -2,7 +2,7 @@ from django.forms import ModelForm, Select
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, HTML
 from django_crispy_bulma.layout import Row, Column
-from .models import Task
+from .models import Client
 
 
 submit_cancel_buttons = HTML(
@@ -18,11 +18,12 @@ class TaskForm(ModelForm):
         super(TaskForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(
-            Row(Column("name", "comment", css_class="edit-view",), Column()), submit_cancel_buttons,
+            Row(Column("name", "surname", "comment", css_class="edit-view",), Column("birthday", "age")),
+            submit_cancel_buttons,
         )
 
     class Meta:
-        model = Task
+        model = Client
         exclude = (
             "created_at",
             "updated_at",
@@ -32,16 +33,16 @@ class TaskForm(ModelForm):
 class TaskFilterForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(TaskFilterForm, self).__init__(*args, **kwargs)
-        self.fields["state"].required = False
-        self.fields["state"].empty_label = ""
+        self.fields["isPremium"].required = False
+        self.fields["isPremium"].empty_label = ""
         self.helper = FormHelper()
-        self.helper.layout = Layout(Row(Column("state",), Column(), css_class="edit-view"))
+        self.helper.layout = Layout(Row(Column("isPremium",), Column(), css_class="edit-view"))
 
     class Meta:
-        model = Task
-        fields = ("state",)
+        model = Client
+        fields = ("isPremium",)
         widgets = {
-            "state": Select(
+            "isPremium": Select(
                 attrs={
                     "onchange": 'filter_table("Статус", this.options[this.selectedIndex].innerText);',
                     "class": "allowclear",

@@ -127,7 +127,6 @@ class TaskDetailView(DetailView):
                 return JsonResponse(dict(url=url))
             else:
                 return HttpResponseRedirect(url)
-
         url = self.request.get_full_path()
 
         if self.request.META.get("HTTP_X_FETCH") == "true":

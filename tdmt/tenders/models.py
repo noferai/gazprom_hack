@@ -70,10 +70,10 @@ class Client(ComputedFieldsModel):
         verbose_name = "Клиент"
         verbose_name_plural = "Клиенты"
 
-    name = models.CharField(max_length=256, null=True)
-    surname = models.CharField(max_length=256, null=True)
-    birthday = models.CharField(max_length=256, null=True)
-    age = models.IntegerField(null=True)
+    name = models.CharField("Имя", max_length=256, null=True)
+    surname = models.CharField("Фамилия", max_length=256, null=True)
+    birthday = models.CharField("День рождения", max_length=256, null=True)
+    age = models.IntegerField("Возраст", null=True)
     gender_code = models.CharField(max_length=256, null=True)
     directory = models.CharField(max_length=256, null=True)
     aMRG_eop = models.DecimalField(max_digits=30, decimal_places=2, null=True)
@@ -89,7 +89,7 @@ class Client(ComputedFieldsModel):
     isPremium = models.BooleanField(null=True)
 
     def __str__(self):
-        return str(self.id)
+        return self.name + " " + self.surname
 
 
 class MCC(models.Model):
