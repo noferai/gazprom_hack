@@ -20,8 +20,6 @@ router.register(r"staff", user_views.UserViewSet)
 router.register(r"client", tenders_views.ClientViewSet)
 router.register(r"mcc", tenders_views.MCCViewSet)
 router.register(r"transaction", tenders_views.TransactionViewSet)
-#
-# viz_router = routers.NestedSimpleRouter(router, r"visualizations", lookup="visualizations")
 
 urlpatterns = [
     # Django Admin, use {% url 'admin:index' %}
@@ -34,6 +32,7 @@ urlpatterns = [
     url(r"^api/visualizations/line/", viz_views.HighchartLine.as_view(), name="line"),
     # url(r"^visualizations/pie/", viz_views),
     # url(r"^visualizations/bar/", viz_views),
+    url(r"^api/nikita", tenders_views.HypotesisView.as_view(), name="nikita"),
     # User management
     url(r"^staff/", include("tdmt.users.urls")),
     # Main

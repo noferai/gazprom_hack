@@ -10,15 +10,6 @@
                 {% include "listview-left.html" %}
                 <div class="level-right">
                     <div class="field has-addons">
-                        <p class="control">
-                            <a class="button add"
-                               href="{% block object_add_url %}{% endblock %}?next={{ encoded_url }}">
-              <span class="icon is-small">
-                <i class="fas fa-plus"></i>
-              </span>
-                                <small>Добавить</small>
-                            </a>
-                        </p>
                         {% if filters_form %}
                             <p class="control">
                                 <a class="button filter" href="#">

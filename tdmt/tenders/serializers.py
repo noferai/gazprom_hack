@@ -59,6 +59,10 @@ class TransactionSerializer(FieldMixin, serializers.ModelSerializer):
         model = Transaction
         exclude = ()
 
+class TransactionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Transaction
+        exclude = ()
 
 class MCCSerializer(serializers.ModelSerializer):
     class Meta:

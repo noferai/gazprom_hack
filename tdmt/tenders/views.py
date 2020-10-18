@@ -9,16 +9,21 @@ from django.views.generic import RedirectView
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from rest_framework import viewsets
+from rest_framework import viewsets, views
+from rest_framework.renderers import JSONRenderer
+from rest_framework.response import Response
 from config.settings import SITE_TITLE, TITLE_DELIM
+from rest_framework.decorators import api_view
 from ..utils import get_clean_next_url
 from .models import Task, TaskState, Client, Transaction, MCC
 from .serializers import TaskSerializer, ClientSerializer, MCCSerializer, TransactionSerializer
+from decimal import Decimal
 from .mixins import ValidationMixin, TaskMixin
 from .forms import (
     TaskForm,
     TaskFilterForm,
 )
+import itertools as it
 
 
 class BaseListView(ListView):
@@ -202,3 +207,123 @@ def task_mark_as_done(request, pk):
         return JsonResponse(dict(url=url))
     else:
         return HttpResponseRedirect(url)
+
+    # ClientSerializer, MCCSerializer, TransactionSerializer
+
+
+class CheckVklad:
+    def check(self, client, servicesArray):
+        money = Decimal(client["pCUR_eop"]) + Decimal(client["pCRD_eop"]) + Decimal(client["pSAV_eop"])
+        if money > Decimal(0.5) * Decimal(client["sWork_S"]):
+            servicesArray.append(
+                {"type": "Вклад", "reason": "На счетах у клиента хранится денет больше 50% от зарплаты"}
+            )
+        if Decimal(client["tPOS_S"]) < Decimal(0.3) * Decimal(client["sWork_S"]):
+            servicesArray.append({"type": "Вклад", "reason": "Траты меньше 30% от зарплаты"})
+
+
+def sumByKat(dictions, category):
+    counter = 0
+    for diction in dictions:
+        if diction['MCC description'] == category:
+            counter += Decimal(diction['CARD_AMOUNT_EQV_CBR'])
+
+    return counter
+
+
+class CheckAuto():
+    def check(self, client, trans, servicesArray):
+        limuzins = sumByKat(trans, 'Лимузины и такси')
+        if limuzins > 30000:
+            servicesArray.append(
+                {"type": "Авто кредит", "reason": "Большие траты на категорию \"Лимузины и такси\""}
+            )
+
+        acesuary = sumByKat(trans, 'Автозапчасти и аксессуары')
+        to = sumByKat(trans, 'Станции техобслуживания с дополнительными услугами или без')
+
+        if acesuary > 10000 and to > 10000:
+            servicesArray.append(
+                {"type": "Авто кредит", "reason": "Большие траты на автозапчасти и станции техобслуживания"}
+            )
+
+        agent = sumByKat(trans, 'Агентства по автотранспорту')
+        if agent > 0:
+            servicesArray.append(
+                {"type": "Авто кредит", "reason": "В последнее время клиент много тратит на ангента по автотранспорту"}
+            )
+
+
+class MiliCard():
+    def check(self, client, trans, servicesArray):
+        avia = sumByKat(trans, 'Авиалинии, авиакомпании - нигде больше не классифицированные')
+        aeroflot = sumByKat(trans, 'AEROFLOT')
+
+        if avia + aeroflot > 30000:
+            servicesArray.append(
+                {"type": "Мили", "reason": "В последнее время клиент часто стал летать"}
+            )
+
+        hotels = sumByKat(trans, 'Отели и мотели - нигде более не классифицированные')
+        if hotels > 50000:
+            servicesArray.append(
+                {"type": "Мили", "reason": "В последнее время клиент часто стал арендовать номера в отелях"}
+            )
+
+
+class Investicii():
+    def check(self, client, trans, servicesArray):
+        fin = sumByKat(trans, 'Финансовые учреждения – торговля и услуги')
+
+        if fin > 10000:
+            servicesArray.append(
+                {"type": "Инвестиционный счет", "reason": "В последнее время клиент часто стал тратить в категории "
+                                                          "\"Финансовые учреждения – торговля и услуги\""}
+            )
+
+
+class Ipoteka():
+    def check(self, client, trans, servicesArray):
+        agent = sumByKat(trans, 'Агенты недвижимости и менеджеры - Аренда')
+
+        if agent > 20000:
+            servicesArray.append(
+                {"type": "Ипотека", "reason": "В последнее время клиент часто стал тратить в категории "
+                                              "\"Агенты недвижимости и менеджеры - Аренда\""}
+            )
+
+        univ = sumByKat(trans, 'Колледжи, университеты')
+
+        if univ > 50000:
+            servicesArray.append(
+                {"type": "Ипотека", "reason": "В последнее время клиент стал тратить в категории "
+                                              "\"Колледжи, университеты\""}
+            )
+
+
+class HypotesisView(views.APIView):
+    def get(self, request):
+        client = Client.objects.get(pk=request.query_params['client_id'])
+        trans = Transaction.objects.filter(client_id_id=request.query_params['client_id'])
+        transInfo = MCC.objects.all()
+        transInfo_s = MCCSerializer(transInfo, many=True)
+        trans_s = TransactionSerializer(trans, many=True)
+        client_s = ClientSerializer(client)
+
+        for tran in trans_s.data:
+            tran['MCC description'] = next(item for item in transInfo_s.data if item["id"] == tran['MCC_CD'])[
+                'Description']
+
+        servicesArray = []
+        check = CheckVklad()
+        check.check(client_s.data, servicesArray)
+        check = CheckAuto()
+        check.check(client_s.data, trans_s.data, servicesArray)
+        check = MiliCard()
+        check.check(client_s.data, trans_s.data, servicesArray)
+        check = Investicii()
+        check.check(client_s.data, trans_s.data, servicesArray)
+        check = Ipoteka()
+        check.check(client_s.data, trans_s.data, servicesArray)
+
+        return Response(servicesArray)
