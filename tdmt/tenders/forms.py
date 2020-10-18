@@ -31,7 +31,7 @@ class TaskForm(ModelForm):
 
 
 class TaskFilterForm(Form):
-    CHOICES = [("", ""), ("true", "true"), ("false", "false")]
+    CHOICES = [(" ", " "), ("true", "true"), ("false", "false")]
     group_by = ChoiceField(
         label="Премиумный клиент?",
         choices=CHOICES,
