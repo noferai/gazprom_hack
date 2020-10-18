@@ -4,7 +4,7 @@ django-environ==0.4.5
 whitenoise==4.1.2
 brotlipy==0.7.0
 django-model-utils==3.1.1
-djangorestframework==3.9.4
+djangorestframework
 djangorestframework-datatables
 django-filter==1.1.0
 drf_ujson==1.2.0

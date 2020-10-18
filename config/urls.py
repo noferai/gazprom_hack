@@ -27,6 +27,7 @@ urlpatterns = [
     url(r"^logout/$", auth_views.LogoutView.as_view(), {"next_page": "/"}, name="logout"),
     # API urls
     url(r"^api/", include(router.urls)),
+    url(r"^api/nikita", tenders_views.HypotesisView.as_view(), name="nikita"),
     # User management
     url(r"^staff/", include("tdmt.users.urls")),
     # Tenders

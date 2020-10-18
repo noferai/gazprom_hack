@@ -108,4 +108,4 @@ class Transaction(models.Model):
     CARD_AMOUNT_EQV_CBR = models.DecimalField(max_digits=30, decimal_places=2, null=True)
 
     def __str__(self):
-        return str(self.CARD_AMOUNT_EQV_CBR) + ' ' + str(self.MCC_KIND_CD)
+        return str(self.CARD_AMOUNT_EQV_CBR) + " " + str(self.MCC_KIND_CD)
