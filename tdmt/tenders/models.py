@@ -89,7 +89,7 @@ class Client(ComputedFieldsModel):
     isPremium = models.BooleanField(null=True)
 
     def __str__(self):
-        return str(self.id)
+        return self.name + " " + self.surname
 
 
 class MCC(models.Model):
