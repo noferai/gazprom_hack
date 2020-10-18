@@ -86,16 +86,7 @@ class Client(ComputedFieldsModel):
     sWork_S = models.DecimalField(max_digits=30, decimal_places=2, null=True)
     tPOS_S = models.DecimalField(max_digits=30, decimal_places=2, null=True)
     manager = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-
-    # @computed(models.BooleanField(null=True), depends=['name'])
-    # def isPremium(self):
-    #     # if (self.sWork_S > 250000 and self.tPOS_S > 50000) or \
-    #     #         (self.pCRD_eop + self.pCUR_eop + self.pDEP_eop + self.pSAV_eop > 2000000) or \
-    #     #         (self.pCRD_eop + self.pCUR_eop + self.pDEP_eop + self.pSAV_eop > 1000000 and self.tPOS_S > 50000):
-    #     #     return 1
-    #     # else:
-    #     #     return 0
-    #     return self.name == self.name
+    isPremium = models.BooleanField(null=True)
 
     def __str__(self):
         return str(self.id)

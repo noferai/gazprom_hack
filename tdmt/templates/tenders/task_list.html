@@ -6,19 +6,20 @@
     <table id="tasks" class="table is-hoverable is-fullwidth list" style="width: 100%">
         <thead>
         <tr>
-            <th><abbr title="Комментарий">#</abbr></th>
-            <th>Дата</th>
-            <th>Название</th>
-            <th>Контрагент</th>
-            <th>Статус</th>
-            <th>Сумма €</th>
-            <th>Сумма ₽</th>
-            <th>Оплачено ₽</th>
-            <th>ТН</th>
-            <th>ТН возвращена</th>
-            <th>Авторизация</th>
-            <th>Комментарий</th>
-            <th class="has-text-centered">Действия</th>
+            <th>Фамилия</th>
+            <th>Име</th>
+            <th>Дата рождения</th>
+            <th>Пол</th>
+            <th>Город</th>
+            <th>Заработок ₽</th>
+            <th>Траты ₽</th>
+            <th>Долг ипотека ₽</th>
+            <th>Долг потреб кредит ₽</th>
+            <th>Долг кредитная карта₽</th>
+            <th>Текущий счет ₽</th>
+            <th>Карточный счет ₽</th>
+            <th>Накопительный счет ₽</th>
+            <th>Депозит ₽</th>
         </tr>
         </thead>
     </table>
@@ -29,7 +30,7 @@
     <script>
         $.fn.dataTable.moment('DD.MM.YYYY');
         dataTable = $('table#tasks').DataTable({
-            "ajax": "/api/tasks/?format=datatables",
+            "ajax": "/api/client/?format=datatables",
             ...globalTableHead,
             "createdRow": function (row, data, dataIndex) {
                 if (data.comment === "")
@@ -37,108 +38,20 @@
             },
             ...exportButtons,
             "columns": [
-                {
-                    "orderable": false,
-                    "searchable": false,
-                    "className": 'details-control',
-                    "data": null,
-                    "defaultContent": ''
-                },
-                {"data": "date", "searchable": false},
+                {"data": "surname"},
                 {"data": "name"},
-                {
-                    "data": "tender",
-                    "name": "tender.title",
-                    "render": function (data) {
-                        return "<a href='" + data.links.view + "' >" + data.title + "</a>";
-                    }
-                },
-                {
-                    "data": "state",
-                    "name": "state.name",
-                    "render": function (data) {
-                        if (data != null) {
-                            let cls = "";
-                            if (data.slug === "dn")
-                                cls = " class='has-text-success'";
-                            if (data.slug === "pl")
-                                cls = " class='has-text-danger'";
-                            if (data.slug === "ip")
-                                cls = " class='has-text-warning'";
-                            return "<span" + cls + ">" + data.name + "</span>";
-                        } else
-                            return "-"
-                    }
-                },
-                {"data": "sum_eu", "render": $.fn.dataTable.render.number(' ', '.', 2)},
-                {"data": "sum_ru", "render": $.fn.dataTable.render.number(' ', '.', 2)},
-                {"data": "paid", "render": $.fn.dataTable.render.number(' ', '.', 2)},
-                {
-                    "data": "tn",
-                    "name": "tn",
-                    "render": function (data, type, row) {
-                        let cls = "";
-                        if (row["tn_returned"] === "Нет")
-                            cls = " class='has-text-danger'";
-                        if (row["tn_returned"] === "Да")
-                            cls = " class='has-text-success'";
-                        return "<span" + cls + ">" + data + "</span>";
-                    }
-                },
-                {"data": "tn_returned", "visible": false},
-                {
-                    "data": "auth",
-                    "name": "auth.inn",
-                    "render": function (data) {
-                        if (data != null)
-                            return "<a href='" + data.links.view + "' >" + data.inn + " " + data.name + "</a>";
-                        else
-                            return "-"
-                    }
-                },
-                {
-                    "data": "comment", "visible": false
-                },
-                {
-                    "data": "links",
-                    "sortable": false,
-                    "searchable": false,
-                    "render": function (data, type, full) {
-                        let mark_done = "";
-                        if (full.state != null) {
-                            if (full.state.slug !== "dn") {
-                                mark_done =
-                                    "<p class=\"control\">" +
-                                    "<a class=\"button is-outlined is-text is-small\"" +
-                                    "href='" + data['mark-done'] + "' title=\"Отгрузить\">" +
-                                    "<span class=\"icon is-small\"><i class=\"fas fa-check\"></i></span>" +
-                                    "</a>" +
-                                    "</p>";
-                            }
-                        }
-                        return "<div class=\"field is-grouped is-grouped-right action\">" +
-                            mark_done +
-                            "<p class=\"control\">" +
-                            "<a class=\"button is-outlined is-text is-small\"" +
-                            "href='" + data.view + "' title=\"Подробнее\">" +
-                            "<span class=\"icon is-small\"><i class=\"fas fa-eye\"></i></span>" +
-                            "</a>" +
-                            "</p>" +
-                            "<p class=\"control\">" +
-                            "<a class=\"button is-outlined is-text is-small\"" +
-                            "href='" + data.edit + "' title=\"Редактировать\">" +
-                            "<span class=\"icon is-small\"><i class=\"fas fa-edit\"></i></span>" +
-                            "</a>" +
-                            "</p>" +
-                            "<p class=\"control\">" +
-                            "<a class=\"button is-outlined is-text is-small confirm-delete\"" +
-                            "href='" + data.delete + "' title=\"Удалить\">" +
-                            "<span class=\"icon is-small\"><i class=\"fas fa-trash\"></i></span>" +
-                            "</a>" +
-                            "</p>" +
-                            "</div>";
-                    }
-                }
+                {"data" : "birthday"},
+                {"data" : "gender_code"},
+                {"data" : "directory"},
+                {"data" : "sWork_S"},
+                {"data" : "tPOS_S"},
+                {"data" : "aMRG_eop", "visible" : false},
+                {"data" : "aCSH_eop", "visible" : false},
+                {"data" : "aCRD_eop", "visible" : false},
+                {"data" : "pCUR_eop", "visible" : false},
+                {"data" : "pCRD_eop", "visible" : false},
+                {"data" : "pSAV_eop", "visible" : false},
+                {"data" : "pDEP_eop", "visible" : false}
             ],
             "order": [[1, 'desc']]
         });
