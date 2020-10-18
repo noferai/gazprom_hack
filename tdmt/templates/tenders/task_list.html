@@ -21,6 +21,7 @@
             <th>Карточный счет ₽</th>
             <th>Накопительный счет ₽</th>
             <th>Депозит ₽</th>
+            <th>is_premium</th>
         </tr>
         </thead>
     </table>
@@ -56,13 +57,19 @@
                 {
                     "data": "surname",
                     "render": function (data, type, full) {
-                        return "<a href='" + full.links.view + "' >" + full.surname + "</a>";
+                        let cls = "";
+                        if (full.isPremium === true)
+                            cls = " class='has-text-success'";
+                        return "<a" + cls + " href='" + full.links.view + "' >" + full.surname + "</a>";
                     }
                 },
                 {
                     "data": "name",
                     "render": function (data, type, full) {
-                        return "<a href='" + full.links.view + "' >" + full.name + "</a>";
+                        let cls = "";
+                        if (full.isPremium === true)
+                            cls = " class='has-text-success'";
+                        return "<a" + cls + " href='" + full.links.view + "' >" + full.name + "</a>";
                     }
                 },
                 {"data" : "birthday"},
@@ -76,7 +83,11 @@
                 {"data" : "pCUR_eop", "visible" : false},
                 {"data" : "pCRD_eop", "visible" : false},
                 {"data" : "pSAV_eop", "visible" : false},
-                {"data" : "pDEP_eop", "visible" : false}
+                {"data" : "pDEP_eop", "visible" : false},
+                {
+                    "data": "is_premium",
+                    "visible" : false,
+                },
             ],
             "order": [[1, 'desc']]
         });
