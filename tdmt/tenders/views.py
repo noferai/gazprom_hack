@@ -210,7 +210,7 @@ def task_mark_as_done(request, pk):
 class CheckVklad:
     def check(self, client, servicesArray):
         money = Decimal(client["pCUR_eop"]) + Decimal(client["pCRD_eop"]) + Decimal(client["pSAV_eop"])
-        if money > Decimal(0.5) * Decimal(client["sWork_S"]):
+        if money > Decimal(0.3) * Decimal(client["sWork_S"]):
             servicesArray.append(
                 {"type": "Вклад", "reason": "На счетах у клиента хранится денет больше 50% от зарплаты"}
             )
