@@ -214,7 +214,7 @@ class CheckVklad:
             servicesArray.append(
                 {"type": "Вклад", "reason": "На счетах у клиента хранится денет больше 50% от зарплаты"}
             )
-        if Decimal(client["tPOS_S"]) < Decimal(0.3) * Decimal(client["sWork_S"]):
+        if Decimal(client["tPOS_S"]) < Decimal(0.7) * Decimal(client["sWork_S"]):
             servicesArray.append({"type": "Вклад", "reason": "Траты меньше 30% от зарплаты"})
 
 
@@ -230,13 +230,13 @@ def sumByKat(dictions, category):
 class CheckAuto:
     def check(self, client, trans, servicesArray):
         limuzins = sumByKat(trans, "Лимузины и такси")
-        if limuzins > 30000:
+        if limuzins > 15000:
             servicesArray.append({"type": "Авто кредит", "reason": 'Большие траты на категорию "Лимузины и такси"'})
 
         acesuary = sumByKat(trans, "Автозапчасти и аксессуары")
         to = sumByKat(trans, "Станции техобслуживания с дополнительными услугами или без")
 
-        if acesuary > 10000 and to > 10000:
+        if acesuary > 5000 and to > 5000:
             servicesArray.append(
                 {"type": "Авто кредит", "reason": "Большие траты на автозапчасти и станции техобслуживания"}
             )
@@ -253,11 +253,11 @@ class MiliCard:
         avia = sumByKat(trans, "Авиалинии, авиакомпании - нигде больше не классифицированные")
         aeroflot = sumByKat(trans, "AEROFLOT")
 
-        if avia + aeroflot > 30000:
+        if avia + aeroflot > 20000:
             servicesArray.append({"type": "Мили", "reason": "В последнее время клиент часто стал летать"})
 
         hotels = sumByKat(trans, "Отели и мотели - нигде более не классифицированные")
-        if hotels > 50000:
+        if hotels > 20000:
             servicesArray.append(
                 {"type": "Мили", "reason": "В последнее время клиент часто стал арендовать номера в отелях"}
             )
@@ -281,7 +281,7 @@ class Ipoteka:
     def check(self, client, trans, servicesArray):
         agent = sumByKat(trans, "Агенты недвижимости и менеджеры - Аренда")
 
-        if agent > 20000:
+        if agent > 10000:
             servicesArray.append(
                 {
                     "type": "Ипотека",
